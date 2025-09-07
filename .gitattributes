@@ -5,7 +5,9 @@
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
-
+*.php text eol=if
+*.blade.php text eol=if
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
