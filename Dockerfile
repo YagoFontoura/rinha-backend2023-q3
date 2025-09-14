@@ -1,24 +1,24 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fpm
 
+# Instalar dependências do sistema
+RUN apt-get update && apt-get install -y \
+    unzip git curl libzip-dev libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo_mysql zip gd
+
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Definir diretório da aplicação
 WORKDIR /var/www
 
-RUN apk add --no-cache \
-    nginx \
-    mysql-client \
-    zip \
-    unzip \
-    git \
-    nodejs \
-    npm
-
-RUN docker-php-ext-install pdo_mysql opcache
-
+# Copiar arquivos do projeto Laravel
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Instalar dependências do Laravel
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-RUN chmod -R 775 storage bootstrap/cache
+# Ajustar permissões
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 9000
-
 CMD ["php-fpm"]
