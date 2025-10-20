@@ -59,16 +59,16 @@ A interface do Swagger permite:
 
 ## 🚀 Como Executar o Projeto
 
-1. **Instalar as dependências:**
+1. **Build da API.:**
 
 ```bash
-   composer install
+   docker build -t api:v1 .
 ```
 
 2. **Rodar o projeto:**
 
 ```bash
-   php server.php
+   docker compose up
 ```
 
 3. **Acessar a documentação:**
@@ -76,4 +76,11 @@ A interface do Swagger permite:
 ```bash
    # Abra no navegador
    http://localhost:8080/
+```
+
+3. **Acessar a API:**
+
+```bash
+   # Abra no navegador
+   http://localhost:9999/
 ```
