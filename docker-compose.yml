@@ -1,0 +1,81 @@
+version: "3.5"
+services:
+  api1: # API - Instância 01
+    image: api:v1
+    hostname: api1
+    depends_on:
+      - db
+    ports:
+      - "9001:9501"
+    volumes:
+      - .:/var/www
+    networks:
+      - rinha-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "0.5GB"
+
+  api2: # API - Instância 02
+    image: api:v1
+    hostname: api2
+    depends_on:
+      - db
+    ports:
+      - "9002:9501"
+    volumes:
+      - .:/var/www
+    networks:
+      - rinha-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "0.5GB"
+
+  nginx: # Load Balancer
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - .:/var/www/
+    depends_on:
+      - api1
+      - api2
+    ports:
+      - "9999:80"
+    networks:
+      - rinha-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "0.5GB"
+
+  db:
+    image: mysql
+    command: --max-connections=250
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: rinha_backend2023
+      MYSQL_USER: rinha
+      MYSQL_PASSWORD: 123456
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - rinha-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: "1.5GB"
+
+networks:
+  rinha-network:
+    driver: bridge
+
+volumes:
+  db_data:
