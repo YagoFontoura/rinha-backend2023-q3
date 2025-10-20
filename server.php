@@ -19,10 +19,6 @@ $dispatcher = simpleDispatcher(function (RouteCollector $r) {
     $r->addRoute('GET', '/pessoas', [PessoaController::class, 'buscaPorTermos']);
     $r->addRoute('POST', '/pessoas', [PessoaController::class, 'salvarPessoa']);
     $r->addRoute('GET', '/contagem-pessoas', [PessoaController::class, 'count']);
-
-    // Documentation routes
-    $r->addRoute('GET', '/documentation', [DocumentationController::class, 'index']);
-    $r->addRoute('GET', '/openapi.yaml', [DocumentationController::class, 'serveOpenApiYaml']);
 });
 
 $server = new Server("0.0.0.0", 9501);

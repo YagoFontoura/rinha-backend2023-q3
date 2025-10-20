@@ -3,7 +3,7 @@
     "info": {
         "title": "API Peoples - Rinha Backend2023 - Q3",
         "description": "API para gerenciamento de pessoas - Rinha de Backend 2023 Q3",
-        "version": "1.1"
+        "version": "1.0"
     },
     "servers": [
         {
