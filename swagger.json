@@ -1,0 +1,201 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Peoples - Rinha Backend2023 - Q3",
+        "description": "API para gerenciamento de pessoas - Rinha de Backend 2023 Q3",
+        "version": "1.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9999",
+            "description": "Servidor Local"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Status"
+                ],
+                "operationId": "getStatus",
+                "responses": {
+                    "200": {
+                        "description": "Return service status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Online"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas/{id}": {
+            "get": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "operationId": "getPessoa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da pessoa",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pessoa encontrada"
+                    },
+                    "400": {
+                        "description": "ID não fornecido"
+                    },
+                    "404": {
+                        "description": "Pessoa não encontrada"
+                    }
+                }
+            }
+        },
+        "/pessoas": {
+            "get": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "operationId": "buscaPorTermos",
+                "parameters": [
+                    {
+                        "name": "t",
+                        "in": "query",
+                        "description": "Termo de busca",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de pessoas encontradas"
+                    },
+                    "400": {
+                        "description": "Parâmetro de busca não fornecido"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "operationId": "salvarPessoa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "apelido",
+                                    "nome",
+                                    "nascimento"
+                                ],
+                                "properties": {
+                                    "apelido": {
+                                        "type": "string",
+                                        "example": "ze"
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "José Silva"
+                                    },
+                                    "nascimento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-01"
+                                    },
+                                    "stack": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "PHP",
+                                            "Python",
+                                            "JavaScript"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pessoa criada com sucesso",
+                        "headers": {
+                            "Location": {
+                                "description": "URI da pessoa criada",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "JSON inválido"
+                    },
+                    "422": {
+                        "description": "Dados inválidos ou apelido já registrado"
+                    }
+                }
+            }
+        },
+        "/contagem-pessoas": {
+            "get": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "operationId": "count",
+                "responses": {
+                    "200": {
+                        "description": "Total de pessoas cadastradas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 100
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Status",
+            "description": "Status"
+        },
+        {
+            "name": "Pessoas",
+            "description": "Pessoas"
+        }
+    ]
+}
